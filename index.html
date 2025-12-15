@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ava Q. Ma de Sousa</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@300;400;600&family=Spectral:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Lora', serif;
+            color: #0f2540;
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+        
+        /* Grain overlay for texture */
+        .grain-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='3.5' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            z-index: 1000;
+        }
+        
+        /* Fixed Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #ffff;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(42, 74, 108, 0.1);
+            z-index: 100;
+            padding: 28px 0;
+        }
+        
+        .header-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .name {
+            font-family: 'Spectral', serif;
+            font-size: 22px;
+            font-weight: 600;
+            color: #0f2540;
+            text-decoration: none;
+            letter-spacing: 0.02em;
+        }
+        
+        nav {
+            display: flex;
+            gap: 20px;
+        }
+        
+        nav a {
+            color: #0f2540;
+            text-decoration: none;
+            font-size: 16px;
+            
+            transition: opacity 0.2s ease;
+        }
+        
+        nav a:hover {
+            opacity: 0.6;
+        }
+        
+        /* Main container with animations */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 160px 40px 80px;
+            position: relative;
+            animation: fadeIn 1s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Header section with photo and intro */
+        .page-header {
+            margin-bottom: 80px;
+            display: flex;
+            align-items: center;
+            gap: 60px;
+            animation: slideIn 0.8s ease-out 0.2s both;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .photo-container {
+            flex-shrink: 0;
+            position: relative;
+            width: 280px;
+            height: 350px;
+        }
+        
+        .photo-frame {
+            width: 100%;
+            height: 100%;
+            border-radius: 2px;
+            overflow: hidden;
+            box-shadow: 
+                0 4px 20px rgba(42, 74, 108, 0.15),
+                0 0 0 1px rgba(42, 74, 108, 0.1);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+        
+        .photo-frame:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 
+                0 8px 30px rgba(42, 74, 108, 0.2),
+                0 0 0 1px rgba(42, 74, 108, 0.15);
+        }
+        
+        .photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .photo-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #2a4a6c, #3d5a7c);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Spectral', serif;
+            font-size: 18px;
+            color: #fcfaf5;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .header-text {
+            flex: 1;
+        }
+        
+        h1 {
+            font-family: 'Spectral', serif;
+            font-size: 48px;
+            font-weight: 600;
+            color: #2a4a6c;
+            margin-bottom: 20px;
+            letter-spacing: -0.02em;
+        }
+        
+        .subtitle {
+            font-size: 18px;
+            color: rgba(42, 74, 108, 0.7);
+            font-weight: 400;
+            margin-bottom: 30px;
+        }
+        
+        .contact-links {
+            display: flex;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .contact-links a {
+            color: #2a4a6c;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 400;
+            border-bottom: 1px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .contact-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: #2a4a6c;
+            transition: width 0.3s ease;
+        }
+        
+        .contact-links a:hover::after {
+            width: 100%;
+        }
+        
+        /* Main content sections */
+        main {
+            animation: slideIn 0.8s ease-out 0.4s both;
+        }
+        
+        section {
+            margin-bottom: 70px;
+        }
+        
+        section:last-child {
+            margin-bottom: 0;
+        }
+        
+        h2 {
+            font-family: 'Spectral', serif;
+            font-size: 24px;
+            font-weight: 600;
+            color: #2a4a6c;
+            margin-bottom: 25px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: #2a4a6c;
+        }
+        
+        p {
+            font-size: 16px;
+            color: rgba(42, 74, 108, 0.85);
+            margin-bottom: 20px;
+            max-width: 720px;
+        }
+        
+        p:last-child {
+            margin-bottom: 0;
+        }
+        
+        p a, .subtitle a {
+            color: #2a4a6c;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(42, 74, 108, 0.3);
+            transition: border-color 0.2s ease;
+        }
+        
+        p a:hover, .subtitle a:hover {
+            border-bottom-color: #2a4a6c;
+        }
+        
+        footer {
+            margin-top: 100px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(42, 74, 108, 0.2);
+            text-align: center;
+            color: rgba(42, 74, 108, 0.6);
+            font-size: 14px;
+            animation: fadeIn 1s ease-out 0.6s both;
+        }
+        
+        /* Mobile */
+        @media (max-width: 768px) {
+            .container {
+                padding: 140px 30px 60px;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 16px;
+                padding: 0 30px;
+            }
+            
+            header {
+                padding: 20px 0;
+            }
+            
+            nav {
+                gap: 20px;
+            }
+            
+            nav a {
+                font-size: 15px;
+            }
+            
+            .page-header {
+                flex-direction: column;
+                gap: 40px;
+                text-align: center;
+            }
+            
+            .photo-container {
+                width: 180px;
+                height: 180px;
+            }
+            
+            h1 {
+                font-size: 36px;
+            }
+            
+            .subtitle {
+                font-size: 16px;
+            }
+            
+            .contact-links {
+                justify-content: center;
+            }
+            
+            h2::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="grain-overlay"></div>
+    
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="name">Ava Q. Ma de Sousa</a>
+            <nav>
+                <a href="index.html">Home</a>
+                <a href="research.html">Research & Publications</a>
+                 <a href="teaching.html">Teaching</a>
+                <a href="service.html">Service</a>
+                <a href="podcast.html">Podcast & SciComm</a>
+            </nav>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="page-header">
+            <div class="photo-container">
+                <div class="photo-frame">
+                    <img src="Ava_headshot2.jpeg" width="300" height="400" alt="Ava Q. Ma de Sousa">
+                </div>
+            </div>
+            
+            <div class="header-text">
+                <h1>Ava Q. Ma de Sousa</h1>
+                    <p class="subtitle">
+                    I'm a Ph.D. candidate in Psychological and Brain Sciences in the 
+                    <a href="https://yeslab.psych.ucsb.edu/" target="_blank">YES Lab</a> 
+                    at UC Santa Barbara.
+                    </p>
+                <p class="subtitle"> I research how <strong> emotions </strong> arise from and shape our <strong> social lives </strong> across <strong> individual experiences </strong> of <strong> connection and disconnection</strong>, <strong> dyadic relationships</strong>, and <strong> collective responses </strong> to injustice. I use behavioral experiments, computational modeling, neuroimaging (fMRI), and NLP to study these questions. 
+                </p>
+
+                <p>
+                Before starting my Ph.D., I completed my B.Sc. in my hometown at the University of Toronto, and then obtained a Res M.Sc. at the University of Amsterdam in Brain and Cognitive Sciences. 
+
+
+</p>
+                <div class="contact-links">
+                    <a href="mailto:avamadesousa@ucsb.edu">Email</a>
+                    <a href="Ava_Ma_deSousa_CV.pdf" target="_blank">CV</a>
+                    <a href="https://www.linkedin.com/in/ava-ma-de-sousa-290b77190/" target="_blank">LinkedIn</a>
+                    <a href="https://scholar.google.com/citations?user=4YjjD3wAAAAJ&hl=en" target="_blank">Google Scholar</a>
+                </div>
+            </div>
+        </div>
+        
+        <main>
+
+            </section>
+        </main>
+        
+        <footer>
+            <p>&copy; 2025 Ava Q. Ma de Sousa</p>
+        </footer>
+    </div>
+    
+    <script>
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Intersection Observer for fade-in animations on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        // Observe all sections
+        document.querySelectorAll('section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
